@@ -1,12 +1,22 @@
+import custom.HttpClientDownloader;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import us.codecraft.webmagic.Page;
 import us.codecraft.webmagic.Site;
 import us.codecraft.webmagic.Spider;
 import us.codecraft.webmagic.processor.PageProcessor;
 
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+
 /**
  * Created by yaochao on 2018/10/19 上午11:16
  */
 public class GithubRepoPageProcessor implements PageProcessor {
+
+    private Logger logger = LoggerFactory.getLogger(GithubRepoPageProcessor.class);
 
     private Site site = Site.me().setRetryTimes(3).setSleepTime(100);
 
@@ -25,6 +35,6 @@ public class GithubRepoPageProcessor implements PageProcessor {
     }
 
     public static void main(String[] args) {
-        Spider.create(new GithubRepoPageProcessor()).addUrl("https://github.com/yaochao");
+        Spider.create(new GithubRepoPageProcessor()).setDownloader(new HttpClientDownloader()).addUrl("https://github.com/yaochao").run();
     }
 }
